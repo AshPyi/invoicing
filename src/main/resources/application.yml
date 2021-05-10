@@ -1,0 +1,11 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/invoicing?useUnicode=true&characterEncoding=utf8
+    username: root
+    password: root
+
+
+
+mybatis:
+  mapper_locations: classpath:mapper/*.xml

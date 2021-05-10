@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>主页</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/element/index.css}">
+</head>
+<body>
+<div id="app">
+    欢迎：<span v-text="name"></span> <a href="#">退出登录</a>
+    <el-tabs tab-position="left" style="height: 200px;">
+        <el-tab-pane label="">
+            <h1>欢迎使用小型进销存系统</h1>
+        </el-tab-pane>
+        <el-tab-pane label="销售">
+            销售
+        </el-tab-pane>
+        <el-tab-pane label="销售信息查询">
+            <p>
+                销售信息查询&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <el-select v-model="value" placeholder="请选择">
+                    <el-option
+                            v-for="item in options"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
+                    </el-option>
+                </el-select>
+            </p>
+            <el-table
+                    :data="tableData"
+                    style="width: 100%">
+                <el-table-column
+                        prop="id"
+                        label="ID">
+                </el-table-column>
+                <el-table-column
+                        prop="productname"
+                        label="商品">
+                </el-table-column>
+                <el-table-column
+                        prop="price"
+                        label="单价">
+                </el-table-column>
+                <el-table-column
+                        prop="quantity"
+                        label="数量">
+                </el-table-column>
+                <el-table-column
+                        prop="totalprice"
+                        label="总价">
+                </el-table-column>
+                <el-table-column
+                        prop="saledate"
+                        label="销售日期">
+                </el-table-column>
+                <el-table-column
+                        prop="realname"
+                        label="销售员">
+                </el-table-column>
+            </el-table>
+        </el-tab-pane>
+        <el-tab-pane label="查看库存">
+            查看库存
+        </el-tab-pane>
+    </el-tabs>
+</div>
+</body>
+<script th:src="@{/js/vue.js}"></script>
+<script th:src="@{/js/vue-axios.js}"></script>
+<script th:src="@{/element/index.js}"></script>
+<script>
+    var app = new Vue({
+        el: '#app',
+        data(){
+            return{
+                name: '',
+                options: [{
+                    value: '1',
+                    label: '销售日期'
+                }, {
+                    value: '2',
+                    label: '单笔总价'
+                }],
+                value: '',
+                tableData: []
+            }
+        },
+        created(){
+            console.log(localStorage.getItem("name"))
+            this.$data.name = localStorage.getItem("name");
+            axios.get('/queryAll')
+            .then(rs=>{
+                console.log(rs);
+                this.tableData = rs.data;
+            })
+        }
+    })
+</script>
+</html>
